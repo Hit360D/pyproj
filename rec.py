@@ -75,3 +75,8 @@ unknown.drop(['index'], axis=1, inplace=True)
 
 # Define a TD-IDF Vectorizer Object
 tfidf = TfidfVectorizer()
+
+# Construct required TF-IDF matrix by fitting and transforming the data
+tfidf_matrix_special = tfidf.fit_transform(special['tags'])
+
+print('EOP')
