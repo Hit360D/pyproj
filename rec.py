@@ -75,6 +75,7 @@ ona.drop(['index'], axis=1, inplace=True)
 unknown = titles[titles['type'] == 'UNKNOWN'].copy().reset_index()
 unknown.drop(['index'], axis=1, inplace=True)
 
+# Compute Term Frequency-Inverse Document Frequency (TF-IDF) vectors for every 'tags' column
 # Define a TD-IDF Vectorizer Object
 tfidf = TfidfVectorizer()
 
@@ -87,6 +88,17 @@ tfidf_matrix_tv = tfidf.fit_transform(tv['tags'].str.replace(r",",""))
 tfidf_matrix_ona = tfidf.fit_transform(ona['tags'].str.replace(r",",""))
 tfidf_matrix_unknown = tfidf.fit_transform(unknown['tags'].str.replace(r",",""))
 
-print(tfidf_matrix_all)
+# Oh man, mafs again
+# Compute the cosine similarity matrix
+cosine_sim_all = linear_kernel(tfidf_matrix_all, tfidf_matrix_all)
+cosine_sim_special = linear_kernel(tfidf_matrix_special, tfidf_matrix_special)
+cosine_sim_movie = linear_kernel(tfidf_matrix_movie, tfidf_matrix_movie)
+cosine_sim_ova = linear_kernel(tfidf_matrix_ova, tfidf_matrix_ova)
+cosine_sim_tv = linear_kernel(tfidf_matrix_tv, tfidf_matrix_tv)
+cosine_sim_ona = linear_kernel(tfidf_matrix_ona, tfidf_matrix_ona)
+cosine_sim_unknown = linear_kernel(tfidf_matrix_unknown, tfidf_matrix_unknown)
+
+# Identify the index of of show in the data given its title
+
 
 print('EOP')
