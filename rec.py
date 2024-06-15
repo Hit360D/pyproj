@@ -3,6 +3,10 @@
 import pandas as pd
 import numpy as np
 
+# I have no idea what these libraries are
+import ast
+import re
+
 import matplotlib.pyplot as plt
 import missingno as msno
 
@@ -99,6 +103,73 @@ cosine_sim_ona = linear_kernel(tfidf_matrix_ona, tfidf_matrix_ona)
 cosine_sim_unknown = linear_kernel(tfidf_matrix_unknown, tfidf_matrix_unknown)
 
 # Identify the index of of show in the data given its title
+# Create a new pandas Series with <database>.index as the values and <database>['title'] as the index.
+# In other words, each title will be mapped to its corresponding index in the <database> DataFrame.
+indices_all = pd.Series(all.index, index=all['title'])
+indices_special = pd.Series(special.index, index=special['title'])
+indices_movie = pd.Series(movie.index, index=movie['title'])
+indices_ova = pd.Series(ova.index, index=ova['title'])
+indices_tv = pd.Series(tv.index, index=tv['title'])
+indices_ona = pd.Series(ona.index, index=ona['title'])
+indices_unknown = pd.Series(unknown.index, index=unknown['title'])
 
+# Function that gets the index searcher and searches the title index
+def get_title(title, indices):
+    try:
+        index = indices[title]
+    except:
+        print('\n Title not found')
+        return None
+    
+    # Checking if index is of instance (type) of NumPy's int64 type else ask to select a title
+    if isinstance(index, np.int64):
+        return index
+    else:
+        rt = 0
+        print('Select a title: ')
+        if indices == indices_all:
+            print(f"{i} - {all['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = all
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        elif indices == indices_special:
+            print(f"{i} - {special['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = special
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        elif indices == indices_movie:
+            print(f"{i} - {movie['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = movie
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        elif indices == indices_ova:
+            print(f"{i} - {ova['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = ova
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        elif indices == indices_tv:
+            print(f"{i} - {tv['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = tv
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        elif indices == indices_ona:
+            print(f"{i} - {ona['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = ona
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        else:
+            print(f"{i} - {unknown['title'].iloc[index[i]]}", end=" ")
+            # imported ast and re and extracting Year somehow, chat GPT's method:
+            df = unknown
+            df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
+            print(f"({df['year'].iloc[index[i]]})")
+        rt = int(input())
+        return index[rt]
 
 print('EOP')
