@@ -53,8 +53,10 @@ titles['tag'] = titles['tags'].str.split(",").str[0]
 # Drop sources picture thumbnail relatedAnime  note -- axis=0 refers to rows and axis=1 refers to columns in pandas
 titles.drop(['sources', 'picture', 'thumbnail', 'relatedAnime'], axis=1, inplace=True)
 
-# Separate into SPECIAL MOVIE OVA TV ONA UNKNOWN
+# Separate into ALL SPECIAL MOVIE OVA TV ONA UNKNOWN
 # after which drop the index column from each
+all = titles.head()
+
 special = titles[titles['type'] == 'SPECIAL'].copy().reset_index()
 special.drop(['index'], axis=1, inplace=True)
 
@@ -77,6 +79,14 @@ unknown.drop(['index'], axis=1, inplace=True)
 tfidf = TfidfVectorizer()
 
 # Construct required TF-IDF matrix by fitting and transforming the data
-tfidf_matrix_special = tfidf.fit_transform(special['tags'])
+tfidf_matrix_all = tfidf.fit_transform(all['tags'].str.replace(r",",""))
+tfidf_matrix_special = tfidf.fit_transform(special['tags'].str.replace(r",",""))
+tfidf_matrix_movie = tfidf.fit_transform(movie['tags'].str.replace(r",",""))
+tfidf_matrix_ova = tfidf.fit_transform(ova['tags'].str.replace(r",",""))
+tfidf_matrix_tv = tfidf.fit_transform(tv['tags'].str.replace(r",",""))
+tfidf_matrix_ona = tfidf.fit_transform(ona['tags'].str.replace(r",",""))
+tfidf_matrix_unknown = tfidf.fit_transform(unknown['tags'].str.replace(r",",""))
+
+print(tfidf_matrix_all)
 
 print('EOP')
