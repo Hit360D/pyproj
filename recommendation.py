@@ -57,16 +57,48 @@ def get_title(title, df):
         for count, i in enumerate(rows, 1):
             print(f"{count}. {i} -- {df.loc[i, 'title']}       [ {df.loc[i, 'type']} ] [ {df.loc[i, 'animeSeason'].upper()} ]")
         print('**' * 40)
+
+        # Take input, print which title selected and return that title
+        num = input('Select the title: ')
+        try:
+            num = int(num)
+            print(f"You selected: {num}. {df.loc[rows[num-1], 'title']}")
+            return rows[num-1]
+        except ValueError:
+            print('Invalid input, enter an integer.')
     else:
         print('No titles matched!')
         return None
+
     
-# get_title('komi-san', all)
+# print(get_title('komi-san', all))
 
 # Function to get recommendations, takes input title and prints top 10 most similar titles based on input tags
-def get_recommendations (title, cosine_sim=cosine_sim):
+def get_recommendations(title, cosine_sim=cosine_sim):
+    index = get_title(title, all)
+    if index == None:
+        return
     
+    print('**' * 40)
 
+    # Get the pairwsie similarity scores of all animes with that anime
+    sim_scores = list(enumerate(cosine_sim[index]))
+
+    # Sort the animes based on the similarity scores
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Get the scores of the 10 most similar animes
+    sim_scores = sim_scores[1:11]
+
+    # Get the anime indices
+    anime_index = []
+    for i in sim_scores:
+        anime_index.append(i[0])
+
+    print(anime_index)
+
+    
+get_recommendations('komi-san')
 
 
 
