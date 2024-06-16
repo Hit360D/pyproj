@@ -53,13 +53,19 @@ def get_title(title, df):
 
     if rows:
         print('The following titles matched:')
-        for i in rows:
-            print(f"Index: {i} -- {df.loc[i, 'title']} [ {df.loc[i, 'animeSeason'].upper()} ]")
+        print('**' * 40)
+        for count, i in enumerate(rows, 1):
+            print(f"{count}. {i} -- {df.loc[i, 'title']}       [ {df.loc[i, 'type']} ] [ {df.loc[i, 'animeSeason'].upper()} ]")
+        print('**' * 40)
     else:
         print('No titles matched!')
         return None
     
-get_title('Pokemon', all)
+# get_title('komi-san', all)
+
+# Function to get recommendations, takes input title and prints top 10 most similar titles based on input tags
+def get_recommendations (title, cosine_sim=cosine_sim):
+    
 
 
 
