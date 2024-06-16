@@ -95,10 +95,12 @@ def get_recommendations(title, cosine_sim=cosine_sim):
     for i in sim_scores:
         anime_index.append(i[0])
 
-    print(anime_index)
+    for count, i in enumerate(anime_index, 1):
+        print(f"{count}. {all.loc[i, 'title']} [{all.loc[i, 'type']}]  [ {all.loc[i, 'status']} ]  [ {all.loc[i, 'animeSeason']} ]")
 
-    
-get_recommendations('komi-san')
+user_input = input('Search for a title: ')
+get_recommendations(user_input)
+# get_recommendations('komi-san')
 
 
 
