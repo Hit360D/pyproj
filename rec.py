@@ -127,49 +127,91 @@ def get_title(title, indices):
     else:
         rt = 0
         print('Select a title: ')
+        for i in range(len(index)):
+            print(f"{i} - {movies['title'].iloc[index[i]]}")
+        rt = int(input())
+        return index[rt]
+
+"""
+        # Todo - make function to do all the following clutter
         if indices == indices_all:
-            print(f"{i} - {all['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = all
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
+            for i in range(len(index)):
+                print(f"{i} - {all['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
         elif indices == indices_special:
-            print(f"{i} - {special['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = special
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
+            for i in range(len(index)):
+                print(f"{i} - {special['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
         elif indices == indices_movie:
-            print(f"{i} - {movie['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = movie
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
+            for i in range(len(index)):
+                print(f"{i} - {movie['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
         elif indices == indices_ova:
-            print(f"{i} - {ova['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = ova
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
+            for i in range(len(index)):
+                print(f"{i} - {ova['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
         elif indices == indices_tv:
-            print(f"{i} - {tv['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = tv
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
+            for i in range(len(index)):
+                print(f"{i} - {tv['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
         elif indices == indices_ona:
-            print(f"{i} - {ona['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = ona
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
+            for i in range(len(index)):
+                print(f"{i} - {ona['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
         else:
-            print(f"{i} - {unknown['title'].iloc[index[i]]}", end=" ")
             # imported ast and re and extracting Year somehow, chat GPT's method:
             df = unknown
             df['year'] = df['animeSeason'].apply(lambda x: ast.literal_eval(x)['year'])
-            print(f"({df['year'].iloc[index[i]]})")
-        rt = int(input())
-        return index[rt]
+            for i in range(len(index)):
+                print(f"{i} - {unknown['title'].iloc[index[i]]}", end=" ")
+                print(f"({df['year'].iloc[index[i]]})")
+"""
+
+# Function that takes anime title as input and prints 10 most similar animes based on tags
+def get_rec_anime(title, cosine_sim=cosine_sim_all):
+    title = get_title(title, indices_all)
+    if title == None:
+        return
+    
+    idx = indices_all[title]
+
+    print(f"Title: {all['title'].iloc[idx]}")
+    print('**' * 40)
+
+    # Get the pairwsie similarity scores of all anime with that anime
+    sim_scores = list(enumerate(cosine_sim[idx]))
+
+    # Sort the shows based on the similarity scores
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Get the scores of the 10 most similar shows
+    sim_scores = sim_scores[1:11]
+
+    # Get the show indices
+    show_indices = [i[0] for i in sim_scores]
+
+    print(all[['title']].iloc[show_indices])
+
+    print('**' * 40)
+
+get_rec_anime('5-fun de Wakaru! How NOT to Summon a Demon Lord')
 
 print('EOP')
