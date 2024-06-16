@@ -43,6 +43,6 @@ cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 print('Cosine similarity calculated')
 
 # Write cosine_sim to a csv file
-cosine_sim_df = pd.DataFrame(cosine_sim, index=titles['title'], columns=titles['title'])
+cosine_sim_df = pd.DataFrame(cosine_sim)
 cosine_sim_df.to_csv('cosine-sim.csv')
 print('Written Cosine similarity matrix to csv file')
